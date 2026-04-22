@@ -1,0 +1,103 @@
+# generated: 2026-04-23
+# last_updated: 2026-04-23
+# project: olaf_external_support
+# project_key: NOKEY
+# tracking_system: file-system
+# story_location: documents/implementation-artifacts
+
+# STATUS DEFINITIONS:
+# ==================
+# Epic Status:
+#   - backlog: Epic not yet started
+#   - in-progress: Epic actively being worked on
+#   - done: All stories in epic completed
+#
+# Epic Status Transitions:
+#   - backlog → in-progress: Automatically when first story is created (via create-story)
+#   - in-progress → done: Manually when all stories reach 'done' status
+#
+# Story Status:
+#   - backlog: Story only exists in epic file
+#   - ready-for-dev: Story file created in stories folder
+#   - in-progress: Developer actively working on implementation
+#   - review: Ready for code review (via Dev's code-review workflow)
+#   - done: Story completed
+#
+# Retrospective Status:
+#   - optional: Can be completed but not required
+#   - done: Retrospective has been completed
+#
+# WORKFLOW NOTES:
+# ===============
+# - Epic transitions to 'in-progress' automatically when first story is created
+# - Stories can be worked in parallel if team capacity allows
+# - Developer typically creates next story after previous one is 'done' to incorporate learnings
+# - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
+
+generated: 2026-04-23
+last_updated: 2026-04-23
+project: olaf_external_support
+project_key: NOKEY
+tracking_system: file-system
+story_location: documents/implementation-artifacts
+
+development_status:
+  # ===== Epic 1: Target Display Platform & Honest-Mirror Rendering (M1) =====
+  epic-1: in-progress
+  1-1-faceplate-enclosure-onshape-design-and-3d-print: done
+  1-2-wiring-harness-assembly-and-wiring-guide: in-progress
+  1-3-platformio-esp-idf-monorepo-scaffold: backlog
+  1-4-three-display-spi-bus-and-lvgl-multi-display-init: backlog
+  1-5-design-tokens-and-olaf-dark-lvgl-theme: backlog
+  1-6-round-display-compositions: backlog
+  1-7-rectangle-chart-compositions: backlog
+  1-8-category-store-and-fresh-boot-placeholder: backlog
+  1-9-rotation-timer-and-coordinated-cross-fade: backlog
+  1-10-backlight-controller-and-backlight-0-idle-state: backlog
+  1-11-on-wall-aesthetic-exit-gate: backlog
+  epic-1-retrospective: optional
+
+  # ===== Epic 2: Target OTA Pipeline & Factory Provisioning (M1) =====
+  epic-2: backlog
+  2-1-factory-flash-nvs-provisioning-channel: backlog
+  2-2-target-wifi-client-for-ota-transport: backlog
+  2-3-dual-partition-ota-download-verify-rollback: backlog
+  2-4-updating-visual-state-during-ota: backlog
+  2-5-firmware-version-publish-on-boot: backlog
+  2-6-secret-redaction-in-logs-via-log-safe: backlog
+  epic-2-retrospective: optional
+
+  # ===== Epic 3: Master + First ESP-NOW Link (M2) =====
+  epic-3: backlog
+  3-1-master-platformio-scaffold-and-factory-flash: backlog
+  3-2-master-persistent-wifi-client: backlog
+  3-3-espnow-envelope-pack-unpack-util-json: backlog
+  3-4-espnow-init-mac-whitelist-and-aes-ccm: backlog
+  3-5-routing-table-on-master: backlog
+  3-6-target-dispatcher-skeleton-and-brightness-handler: backlog
+  3-7-link-state-detection-skeleton: backlog
+  epic-3-retrospective: optional
+
+  # ===== Epic 4: Full Target Protocol & Degraded-State Rendering (M3) =====
+  epic-4: backlog
+  4-1-full-opcode-dispatcher: backlog
+  4-2-lkg-cache-staleness-monitor-three-visual-states: backlog
+  4-3-sleep-manager-and-deep-sleep-entry: backlog
+  4-4-wake-from-deep-sleep-and-re-render: backlog
+  4-5-on-demand-wifi-lifecycle-wifi-up-down-tcp-listener: backlog
+  4-6-transport-selector-offline-queue-espnow-fragmentation: backlog
+  4-7-master-streamed-ota: backlog
+  4-8-diagnostic-event-stream: backlog
+  4-9-auto-reconnect-backoff-and-72-hour-soak: backlog
+  4-10-performance-gate-nfr-p1-through-p6-measured: backlog
+  epic-4-retrospective: optional
+
+  # ===== Epic 5: MCP Agent Surface (M4) =====
+  epic-5: backlog
+  5-1-master-websocket-server-ws-mcp-endpoint: backlog
+  5-2-python-mcp-server-scaffold-and-websocket-client: backlog
+  5-3-six-tools-for-dashboard-a-with-logical-name-routing: backlog
+  5-4-mcp-resources-fleet-status-and-node-logs: backlog
+  5-5-systemd-service-and-deployment: backlog
+  5-6-journey-4-end-to-end-validation: backlog
+  epic-5-retrospective: optional
