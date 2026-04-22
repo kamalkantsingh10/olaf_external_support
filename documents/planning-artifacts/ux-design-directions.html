@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>OLAF Health Dashboard — Design Direction Mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-page: #141416;
+    --bg-display: #000000;
+    --fg: #F5F5F5;
+    --muted: #8A8A8A;
+    --dim: #555555;
+    --good: #30D158;
+    --warn: #FFB020;
+    --bad: #FF3B30;
+    --unknown: #6E6E6E;
+    --cat-weight: #5AC8FA;
+    --cat-glucose: #FF6AD5;
+    --cat-cycling: #FFCC00;
+    --cat-fasting: #B478FF;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg-page);
+    color: var(--fg);
+    font-family: 'Inter', -apple-system, sans-serif;
+    font-feature-settings: "tnum";
+    padding: 48px 32px;
+    min-height: 100vh;
+  }
+  header {
+    max-width: 980px;
+    margin: 0 auto 48px;
+  }
+  header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+  header .subtitle {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .mockup-grid {
+    max-width: 980px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 64px;
+  }
+  .category-block {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .category-block h2 {
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+  .category-block h2 .status-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 10px;
+    vertical-align: middle;
+  }
+
+  /* Faceplate: rectangle LEFT in portrait, two circles RIGHT stacked */
+  .faceplate {
+    background: #0A0A0B;
+    border: 1px solid #1E1E21;
+    border-radius: 12px;
+    padding: 32px;
+    display: grid;
+    grid-template-columns: 240px 144px;
+    grid-template-rows: 144px 144px;
+    gap: 24px;
+    width: fit-content;
+    align-items: center;
+  }
+  .rect {
+    width: 240px;
+    height: 320px;
+    background: var(--bg-display);
+    border-radius: 4px;
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    align-self: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .round {
+    width: 144px;
+    height: 144px;
+    background: var(--bg-display);
+    border-radius: 50%;
+    position: relative;
+    grid-column: 2;
+  }
+  .round.top { grid-row: 1; }
+  .round.bot { grid-row: 2; }
+
+  /* Status ring as annulus via ::before / ::after — 7 px ring at reduced scale */
+  .round::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: var(--ring, var(--good));
+  }
+  .round::after {
+    content: '';
+    position: absolute;
+    inset: 7px;
+    border-radius: 50%;
+    background: var(--bg-display);
+  }
+  .round-content {
+    position: absolute;
+    inset: 7px;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    padding: 10px;
+  }
+  .label-top {
+    position: absolute;
+    top: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 7px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--muted);
+    z-index: 3;
+  }
+  .numeral {
+    font-size: 34px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--fg);
+    font-feature-settings: "tnum";
+  }
+  .numeral .unit {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--fg);
+    margin-left: 2px;
+  }
+  .numeral.secondary { font-size: 26px; }
+  .numeral.small-secondary { font-size: 22px; }
+  .timestamp {
+    position: absolute;
+    bottom: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 7px;
+    font-weight: 400;
+    color: var(--muted);
+    white-space: nowrap;
+    z-index: 3;
+  }
+
+  /* Rectangle display (portrait) */
+  .rect-title {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    right: 16px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--muted);
+    letter-spacing: 0.02em;
+  }
+  .rect-axis-left {
+    position: absolute;
+    bottom: 12px;
+    left: 16px;
+    font-size: 10px;
+    font-weight: 400;
+    color: var(--dim);
+  }
+  .rect-axis-right {
+    position: absolute;
+    bottom: 12px;
+    right: 16px;
+    font-size: 10px;
+    font-weight: 400;
+    color: var(--dim);
+  }
+  .chart {
+    position: absolute;
+    top: 48px;
+    left: 16px;
+    right: 16px;
+    bottom: 32px;
+  }
+  .chart svg { width: 100%; height: 100%; }
+
+  .tokens-reference {
+    max-width: 980px;
+    margin: 96px auto 0;
+    padding-top: 48px;
+    border-top: 1px solid #1E1E21;
+  }
+  .tokens-reference h3 {
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+  .swatch-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .swatch {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .swatch .chip {
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .swatch .label {
+    font-size: 12px;
+    color: var(--fg);
+  }
+  .swatch .label .hex {
+    display: block;
+    font-size: 10px;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .note {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-top: 24px;
+  }
+  .physical-note {
+    font-size: 11px;
+    color: var(--dim);
+    font-style: italic;
+    margin-top: 8px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>OLAF Health Dashboard</h1>
+  <p class="subtitle">
+    Design direction mockup — our committed visual system applied to all four categories.<br>
+    <strong>Layout:</strong> 2.8" ILI9341 rectangle on the <strong>left in portrait orientation</strong> (240×320); two 1.28" GC9A01 round displays stacked on the <strong>right</strong> (each 240×240). Vertically symmetric about the faceplate midline.<br>
+    <span class="physical-note">Mockup shows circles rendered smaller than physical proportion would dictate — deliberately reduced to emphasise the small 1.28" form factor relative to the 2.8" rectangle. Content inside circles is proportionally scaled (~60% of spec values); firmware renders at the full 240×240 canvas at the committed token sizes (56 px headline numerals, 12 px labels, etc.).</span>
+  </p>
+</header>
+
+<main class="mockup-grid">
+
+  <!-- BODY WEIGHT -->
+  <div class="category-block">
+    <h2><span class="status-dot" style="background: var(--good)"></span>Body Weight — Good state</h2>
+    <div class="faceplate">
+      <div class="rect">
+        <div class="rect-title">Body Weight · 30 days</div>
+        <div class="chart">
+          <svg viewBox="0 0 208 240" preserveAspectRatio="none">
+            <polyline
+              fill="none"
+              stroke="#5AC8FA"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              points="0,30 7,28 14,32 21,35 28,38 35,36 42,42 49,45 56,40 63,48 70,55 77,52 84,58 91,62 98,65 105,60 112,70 119,68 126,75 133,72 140,80 147,78 154,85 161,82 168,90 175,88 182,95 189,92 196,100 203,105 208,108"
+            />
+          </svg>
+        </div>
+        <div class="rect-axis-left">30d ago</div>
+        <div class="rect-axis-right">now</div>
+      </div>
+      <div class="round top" style="--ring: var(--good)">
+        <div class="label-top">Body Weight</div>
+        <div class="round-content">
+          <div class="numeral">84.2<span class="unit">kg</span></div>
+        </div>
+        <div class="timestamp">this morning</div>
+      </div>
+      <div class="round bot" style="--ring: var(--good)">
+        <div class="label-top">7-Day Trend</div>
+        <div class="round-content">
+          <div class="numeral secondary" style="color: var(--cat-weight)">−0.4<span class="unit">kg</span></div>
+        </div>
+        <div class="timestamp">past week</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GLUCOSE -->
+  <div class="category-block">
+    <h2><span class="status-dot" style="background: var(--warn)"></span>Glucose — Warning state</h2>
+    <div class="faceplate">
+      <div class="rect">
+        <div class="rect-title">Glucose · 14 days</div>
+        <div class="chart">
+          <svg viewBox="0 0 208 240" preserveAspectRatio="none">
+            <!-- subtle healthy range band (mmol 4–7) -->
+            <rect x="0" y="95" width="208" height="75" fill="#FF6AD5" fill-opacity="0.05"/>
+            <g fill="#FF6AD5">
+              <circle cx="5"   cy="135" r="3"/>
+              <circle cx="10"  cy="115" r="3"/>
+              <circle cx="14"  cy="125" r="3"/>
+              <circle cx="20"  cy="132" r="3"/>
+              <circle cx="25"  cy="122" r="3"/>
+              <circle cx="29"  cy="75"  r="3"/>
+              <circle cx="35"  cy="140" r="3"/>
+              <circle cx="40"  cy="107" r="3"/>
+              <circle cx="44"  cy="122" r="3"/>
+              <circle cx="55"  cy="135" r="3"/>
+              <circle cx="60"  cy="100" r="3"/>
+              <circle cx="70"  cy="132" r="3"/>
+              <circle cx="85"  cy="145" r="3"/>
+              <circle cx="90"  cy="120" r="3"/>
+              <circle cx="100" cy="137" r="3"/>
+              <circle cx="112" cy="122" r="3"/>
+              <circle cx="122" cy="110" r="3"/>
+              <circle cx="128" cy="90"  r="3"/>
+              <circle cx="140" cy="127" r="3"/>
+              <circle cx="152" cy="135" r="3"/>
+              <circle cx="165" cy="117" r="3"/>
+              <circle cx="178" cy="132" r="3"/>
+              <circle cx="188" cy="105" r="3"/>
+              <circle cx="198" cy="80"  r="3"/>
+            </g>
+          </svg>
+        </div>
+        <div class="rect-axis-left">14d ago</div>
+        <div class="rect-axis-right">now</div>
+      </div>
+      <div class="round top" style="--ring: var(--warn)">
+        <div class="label-top">Glucose</div>
+        <div class="round-content">
+          <div class="numeral" style="font-size: 29px">7.6<span class="unit">mmol/L</span></div>
+        </div>
+        <div class="timestamp">20 min ago</div>
+      </div>
+      <div class="round bot" style="--ring: var(--good)">
+        <div class="label-top">Daily Average</div>
+        <div class="round-content">
+          <div class="numeral" style="font-size: 29px; color: var(--cat-glucose)">5.8<span class="unit">mmol/L</span></div>
+        </div>
+        <div class="timestamp">today</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CYCLING -->
+  <div class="category-block">
+    <h2><span class="status-dot" style="background: var(--good)"></span>Cycling — Good state</h2>
+    <div class="faceplate">
+      <div class="rect">
+        <div class="rect-title">Cycling · 8 weeks (km)</div>
+        <div class="chart">
+          <svg viewBox="0 0 208 240" preserveAspectRatio="none">
+            <g fill="#FFCC00">
+              <rect x="2"   y="134" width="22" height="96"/>
+              <rect x="28"  y="95"  width="22" height="135"/>
+              <rect x="54"  y="56"  width="22" height="174"/>
+              <rect x="80"  y="77"  width="22" height="153"/>
+              <rect x="106" y="29"  width="22" height="201"/>
+              <rect x="132" y="83"  width="22" height="147"/>
+              <rect x="158" y="101" width="22" height="129"/>
+              <rect x="184" y="89"  width="22" height="141"/>
+            </g>
+          </svg>
+        </div>
+        <div class="rect-axis-left">8w ago</div>
+        <div class="rect-axis-right">this week</div>
+      </div>
+      <div class="round top" style="--ring: var(--good)">
+        <div class="label-top">This Week</div>
+        <div class="round-content">
+          <div class="numeral">47.3<span class="unit">km</span></div>
+        </div>
+        <div class="timestamp">as of today</div>
+      </div>
+      <div class="round bot" style="--ring: var(--good)">
+        <div class="label-top">Last Ride</div>
+        <div class="round-content">
+          <div class="numeral small-secondary" style="color: var(--cat-cycling)">22.1<span class="unit">km</span></div>
+        </div>
+        <div class="timestamp">2 days ago</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FASTING -->
+  <div class="category-block">
+    <h2><span class="status-dot" style="background: var(--good)"></span>Fasting — Good state</h2>
+    <div class="faceplate">
+      <div class="rect">
+        <div class="rect-title">Fasting · 14 days (hrs)</div>
+        <div class="chart">
+          <svg viewBox="0 0 208 240" preserveAspectRatio="none">
+            <g fill="#B478FF">
+              <rect x="7"   y="47"  width="12" height="183"/>
+              <rect x="21"  y="72"  width="12" height="158"/>
+              <rect x="35"  y="54"  width="12" height="176"/>
+              <rect x="49"  y="52"  width="12" height="178"/>
+              <rect x="63"  y="40"  width="12" height="190"/>
+              <rect x="77"  y="69"  width="12" height="161"/>
+              <rect x="91"  y="50"  width="12" height="180"/>
+              <rect x="105" y="53"  width="12" height="177"/>
+              <rect x="119" y="63"  width="12" height="167"/>
+              <rect x="133" y="43"  width="12" height="187"/>
+              <rect x="147" y="58"  width="12" height="172"/>
+              <rect x="161" y="52"  width="12" height="178"/>
+              <rect x="175" y="49"  width="12" height="181"/>
+              <rect x="189" y="54"  width="12" height="176"/>
+            </g>
+          </svg>
+        </div>
+        <div class="rect-axis-left">14d ago</div>
+        <div class="rect-axis-right">today</div>
+      </div>
+      <div class="round top" style="--ring: var(--good)">
+        <div class="label-top">Last Window</div>
+        <div class="round-content">
+          <div class="numeral">16:30<span class="unit">h</span></div>
+        </div>
+        <div class="timestamp">today</div>
+      </div>
+      <div class="round bot" style="--ring: var(--good)">
+        <div class="label-top">Weekly Average</div>
+        <div class="round-content">
+          <div class="numeral secondary" style="color: var(--cat-fasting)">15.8<span class="unit">h/d</span></div>
+        </div>
+        <div class="timestamp">past 7 days</div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<aside class="tokens-reference">
+  <h3>Design Token Reference</h3>
+
+  <div style="font-size:12px;color:var(--muted);margin-bottom:12px;">Status colours (ring only)</div>
+  <div class="swatch-grid">
+    <div class="swatch"><span class="chip" style="background:#30D158"></span><span class="label">Good<span class="hex">#30D158</span></span></div>
+    <div class="swatch"><span class="chip" style="background:#FFB020"></span><span class="label">Warning<span class="hex">#FFB020</span></span></div>
+    <div class="swatch"><span class="chip" style="background:#FF3B30"></span><span class="label">Bad<span class="hex">#FF3B30</span></span></div>
+    <div class="swatch"><span class="chip" style="background:#6E6E6E"></span><span class="label">Unknown<span class="hex">#6E6E6E</span></span></div>
+  </div>
+
+  <div style="font-size:12px;color:var(--muted);margin-bottom:12px;">Category accents (centre content / chart stroke)</div>
+  <div class="swatch-grid">
+    <div class="swatch"><span class="chip" style="background:#5AC8FA"></span><span class="label">Body Weight<span class="hex">#5AC8FA</span></span></div>
+    <div class="swatch"><span class="chip" style="background:#FF6AD5"></span><span class="label">Glucose<span class="hex">#FF6AD5</span></span></div>
+    <div class="swatch"><span class="chip" style="background:#FFCC00"></span><span class="label">Cycling<span class="hex">#FFCC00</span></span></div>
+    <div class="swatch"><span class="chip" style="background:#B478FF"></span><span class="label">Fasting<span class="hex">#B478FF</span></span></div>
+  </div>
+
+  <p class="note">
+    <strong>Hardware:</strong> 2.8" ILI9341 rectangle on left in portrait (240×320 logical canvas); two 1.28" GC9A01 round displays on right, stacked (each 240×240 canvas). Vertically symmetric about the faceplate midline.<br>
+    <strong>Typography:</strong> Inter (Regular 400, Medium 500, Bold 700), tabular numerals. Headline numeral 56 px Bold. Unit suffix 22 px Medium. Category label 12 px Medium caps. Timestamp 10 px Regular. Chart title 14 px Medium.<br>
+    <strong>Status ring geometry:</strong> outer r = 118, inner r = 106, centre (120, 120), 12 px annulus — full 360° fill in the status colour.<br>
+    <strong>Backgrounds:</strong> true OLED black #000000 everywhere.
+  </p>
+</aside>
+
+</body>
+</html>

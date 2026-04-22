@@ -1,0 +1,48 @@
+# VS Code — IntelliSense caches (huge) and per-machine state
+.vscode/*.db
+.vscode/*.db-*
+.vscode/ipch/
+.vscode/.browse.VC.db*
+
+# Claude Code — local personal settings (keep skills/ committed)
+.claude/settings.local.json
+
+# PlatformIO build output (future, per node firmware/)
+.pio/
+.piolibdeps/
+lib_deps_external/
+**/managed_components/
+
+# ESP-IDF build artefacts (future)
+**/build/
+sdkconfig.old
+
+# Python (for mcp/ — future)
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+*.egg-info/
+dist/
+
+# Firmware factory credentials — NEVER commit real values
+**/factory/credentials.env
+**/factory/*.env
+!**/factory/credentials.env.example
+!**/factory/*.env.example
+
+# Secrets / env files
+.env
+.env.local
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+desktop.ini
+*~
+*.swp
+*.swo
+
+# Logs
+*.log
